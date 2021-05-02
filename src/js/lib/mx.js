@@ -1022,7 +1022,11 @@ const Mx = {
         }
 
         getBoundingRectangle(padding = 0, backgroundColor = undefined, borderColor = 'red', borderThickness = 1) {
-            // TODO
+            return Mx.Geo.Rectangle.create(
+                this.x - this.drawnWidth/2 - padding, this.y - this.drawnHeight - padding,
+                this.drawnWidth + padding * 2, this.drawnHeight + padding * 2,
+                backgroundColor, borderColor, borderThickness
+            );
         }
     
         getBoundingCircle(padding = 0, backgroundColor = undefined, borderColor = 'red', borderThickness = 1) {

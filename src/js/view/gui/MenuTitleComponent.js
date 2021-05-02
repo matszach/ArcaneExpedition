@@ -2,8 +2,8 @@ const Mx = require("../../lib/mx");
 
 module.exports = class MenuTitleComponent extends Mx.Gui.GuiComponent {
 
-    constructor(x, y, value = 'Title') {
-        super(x, y, {value});
+    constructor(value = 'Title') {
+        super(0, 0, {value});
     }
 
     construct() {

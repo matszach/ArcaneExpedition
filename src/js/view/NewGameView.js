@@ -4,20 +4,21 @@ const MenuTitleComponent = require("./gui/MenuTitleComponent");
 const MenuBackgroundAnimation = require("./gui/MenuBackgroundAnimation");
 const VersionInfo = require("./gui/VersionInfo");
 const Cursor = require("./gui/Cursor");
+const SeedInputComponent = require("./gui/SeedInputComponent");
 
-module.exports = class BootView extends Mx.View {
+module.exports = class NewGameView extends Mx.View {
 
     onCreate() {
-        this.title = new MenuTitleComponent('Arcane Expedition');
-        this.playButton = new MenuButtonComponent('Play', () => this.game.toView(require("./MainMenuView")));
-        this.exitButton =  new MenuButtonComponent('Exit', () => window.close());
+        this.title = new MenuTitleComponent('New game');
+        this.seedInput = new SeedInputComponent();
+        this.returnButton = new MenuButtonComponent('Return', () => this.game.toView(require("./MainMenuView")));
     }
 
     onResize() {
         const {width: vw, height: vh} = this.handler.canvas;
-        this.title.place(vw/2, vh/2 - 50);
-        this.playButton.place(vw/2 - 150, vh/2 + 50);
-        this.exitButton.place(vw/2 + 150, vh/2 + 50);
+        this.title.place(vw/2, vh/2 - 120);
+        this.seedInput.place(vw/2 - 15, vh/2 - 40);
+        this.returnButton.place(vw/2, vh/2 + 50);
     }
 
     onUpdate() {
@@ -25,8 +26,8 @@ module.exports = class BootView extends Mx.View {
         MenuBackgroundAnimation.handle(this.handler, this.input);
         this.handler.handles([
             this.title,
-            this.playButton, 
-            this.exitButton
+            this.seedInput,
+            this.returnButton
         ]);
         VersionInfo.handle(this.handler);
         Cursor.draw(this.handler, this.input);

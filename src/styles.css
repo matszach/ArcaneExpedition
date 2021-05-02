@@ -1,4 +1,9 @@
+* {
+    cursor: none;
+}
+
 @font-face {
     font-family: 'pixel';
     src: url('./assets/fonts/pixel.ttf');
 }
+

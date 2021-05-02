@@ -4,9 +4,9 @@ const path = require('path')
 app.whenReady().then(() => {
   const win = new BrowserWindow({
     width: 1200,
-    minWidth: 800,
+    minWidth: 900,
     height: 800,
-    minHeight: 500,
+    minHeight: 600,
     webPreferences: {
       preload: path.join(__dirname, 'js/preload.js')
     },
