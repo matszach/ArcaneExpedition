@@ -1,4 +1,4 @@
-const {author, version} = require("./../../../package.json");
+const {author, version} = require("./../../../../package.json");
 
 module.exports = class VersionInfo {
 

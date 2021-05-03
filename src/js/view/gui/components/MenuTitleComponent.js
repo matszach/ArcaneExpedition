@@ -1,4 +1,4 @@
-const Mx = require("../../lib/mx");
+const Mx = require("../../../lib/mx");
 
 module.exports = class MenuTitleComponent extends Mx.Gui.GuiComponent {
 

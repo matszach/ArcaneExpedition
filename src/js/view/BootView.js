@@ -1,16 +1,16 @@
 const Mx = require("../lib/mx");
-const MenuButtonComponent = require("./gui/MenuButtonComponent");
-const MenuTitleComponent = require("./gui/MenuTitleComponent");
-const MenuBackgroundAnimation = require("./gui/MenuBackgroundAnimation");
-const VersionInfo = require("./gui/VersionInfo");
-const Cursor = require("./gui/Cursor");
+const MenuButtonComponent = require("./gui/components/MenuButtonComponent");
+const MenuTitleComponent = require("./gui/components/MenuTitleComponent");
+const MenuBackgroundAnimation = require("./gui/misc/MenuBackgroundAnimation");
+const VersionInfo = require("./gui/misc/VersionInfo");
+const Cursor = require("./gui/misc/Cursor");
 
 module.exports = class BootView extends Mx.View {
 
     onCreate() {
         this.title = new MenuTitleComponent('Arcane Expedition');
-        this.playButton = new MenuButtonComponent('Play', () => this.game.toView(require("./MainMenuView")));
-        this.exitButton =  new MenuButtonComponent('Exit', () => window.close());
+        this.playButton = new MenuButtonComponent('Play', 48, () => this.game.toView(require("./MainMenuView")));
+        this.exitButton =  new MenuButtonComponent('Exit', 48, () => window.close());
     }
 
     onResize() {

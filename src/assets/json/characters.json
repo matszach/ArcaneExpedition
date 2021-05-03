@@ -1,0 +1,50 @@
+[
+    {
+      "id": 0,
+      "key": "KNIGHT",
+      "name": "Knight",
+      "y": 0
+    },
+    {
+      "id": 1,
+      "key": "MAGE",
+      "name": "Mage",
+      "y": 1
+    },
+    {
+      "id": 2,
+      "key": "ROGUE",
+      "name": "Rogue",
+      "y": 2
+    },
+    {
+      "id": 3,
+      "key": "PALADIN",
+      "name": "Paladin",
+      "y": 3
+    },
+    {
+      "id": 4,
+      "key": "SPEARMAN",
+      "name": "Spearman",
+      "y": 4
+    },
+    {
+      "id": 5,
+      "key": "PYRO",
+      "name": "Pyro",
+      "y": 5
+    },
+    {
+      "id": 6,
+      "key": "ARCHER",
+      "name": "Archer",
+      "y": 6
+    },
+    {
+      "id": 7,
+      "key": "CLERIC",
+      "name": "Cleric",
+      "y": 7
+    }
+  ]

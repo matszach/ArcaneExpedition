@@ -1,4 +1,4 @@
-const SheetManager = require("../../service/SheetManager");
+const SheetManager = require("../../../service/SheetManager");
 
 module.exports = Cursor = {
 

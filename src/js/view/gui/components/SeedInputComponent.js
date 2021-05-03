@@ -1,6 +1,6 @@
-const Mx = require("../../lib/mx");
-const SheetManager = require("../../service/SheetManager");
-const Cursor = require("./Cursor");
+const Mx = require("../../../lib/mx");
+const SheetManager = require("../../../service/SheetManager");
+const Cursor = require("./../misc/Cursor");
 
 module.exports = class SeedInputComponent extends Mx.Gui.GuiComponent {
 

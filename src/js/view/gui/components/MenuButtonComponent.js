@@ -1,11 +1,11 @@
-const Mx = require("../../lib/mx");
-const SheetManager = require("../../service/SheetManager");
-const Cursor = require("./Cursor");
+const Mx = require("../../../lib/mx");
+const SheetManager = require("../../../service/SheetManager");
+const Cursor = require("./../misc/Cursor");
 
 module.exports = class MenuButtonComponent extends Mx.Gui.GuiComponent {
 
-    constructor(value = 'Button', action = () => {}) {
-        super(0, 0, {value, action});
+    constructor(value = 'Button', size = 48, action = () => {}) {
+        super(0, 0, {value, size, action});
     }
 
     disable() {
@@ -45,7 +45,7 @@ module.exports = class MenuButtonComponent extends Mx.Gui.GuiComponent {
     }
 
     construct() {
-        this.body = SheetManager.button.get(0, 0);
+        this.body = SheetManager['button' + this.options.size].get(0, 0);
         this.text = Mx.Text.create(0, 10, this.options.value, '#ffffff', 40, 'pixel', 0, 1, 'center');
         this.container.adds(this.body, this.text);
         this.enable();
