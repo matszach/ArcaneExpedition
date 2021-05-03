@@ -18,7 +18,7 @@ module.exports = class NewGameView extends Mx.View {
         const {width: vw, height: vh} = this.handler.canvas;
         this.title.place(vw/2, vh/2 - 120);
         this.seedInput.place(vw/2 - 15, vh/2 - 40);
-        this.returnButton.place(vw/2, vh/2 + 50);
+        this.returnButton.place(vw/2, vh/2 + 200);
     }
 
     onUpdate() {

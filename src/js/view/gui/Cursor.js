@@ -12,6 +12,9 @@ module.exports = Cursor = {
             case 'text':
                 sprite = SheetManager.cursor.get(1, 0);
                 break;
+            case 'pointer':
+                sprite = SheetManager.cursor.get(2, 0);
+                break;
             case 'arrow':
             default:
                 sprite = SheetManager.cursor.get(0, 0);

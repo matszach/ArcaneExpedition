@@ -10,9 +10,9 @@ module.exports = class MainMenuView extends Mx.View {
     onCreate() {
         this.title = new MenuTitleComponent('Main Menu');
         this.newGameButton = new MenuButtonComponent('New game', () => this.game.toView(require("./NewGameView")));
-        this.continueButton = new MenuButtonComponent('Continue', () => {});
-        this.optionsButton = new MenuButtonComponent('Options', () => {});
-        this.creditsButton = new MenuButtonComponent('Credits', () => {});
+        this.continueButton = new MenuButtonComponent('Continue', () => {}).disable();
+        this.optionsButton = new MenuButtonComponent('Options', () => {}).disable();
+        this.creditsButton = new MenuButtonComponent('Credits', () => {}).disable();
     }
 
     onResize() {
