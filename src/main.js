@@ -7,6 +7,7 @@ app.whenReady().then(() => {
     minWidth: 900,
     height: 800,
     minHeight: 600,
+    icon: path.join(__dirname, 'assets/img/favicon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'js/preload.js')
     },

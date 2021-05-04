@@ -4,8 +4,8 @@ const Cursor = require("./../misc/Cursor");
 
 module.exports = class MenuButtonComponent extends Mx.Gui.GuiComponent {
 
-    constructor(value = 'Button', size = 48, action = () => {}) {
-        super(0, 0, {value, size, action});
+    constructor(value = 'Button', size = 48, action = () => {}, keepHover = false) {
+        super(0, 0, {value, size, action, keepHover});
     }
 
     disable() {
@@ -35,7 +35,11 @@ module.exports = class MenuButtonComponent extends Mx.Gui.GuiComponent {
             this.body.setFrame(0, 0);
             this.text.move(0, -5);
             this.options.action();
-            Cursor.key = 'arrow';
+            if(!this.options.keepHover) {
+                Cursor.key = 'arrow';
+            } else {
+                this.body.setFrame(0, 1);
+            }
         });
         return this;
     }

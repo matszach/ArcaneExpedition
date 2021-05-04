@@ -10,4 +10,6 @@ module.exports = class SheetManager {
     static cursor = this._load('cursor', 16, 16);
     static characters = this._load('characters', 16, 16);
     static characterSelectBackground = this._load('characterSelectBackground', 24, 24);
+    static buttonDice = this._load('buttonDice', 32, 16);
+    static loadingBar = this._load('loadingBar', 64, 16);
 }

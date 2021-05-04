@@ -16,7 +16,8 @@ module.exports = class SeedInputComponent extends Mx.Gui.GuiComponent {
 
     construct() {
         this.input = SheetManager.textinput.get(0, 0).place(220, 0);
-        this.value = Mx.Text.create(220, 10, ' ', '#ffffff', 40, 'pixel', 0, 1, 'center');
+        this.value = Mx.Text.create(220, 10, '', '#ffffff', 40, 'pixel', 0, 1, 'center');
+        this.value.content = '';
         this.label = Mx.Text.create(0, 10, 'Seed:', '#ffffff', 40, 'pixel', 0, 1, 'center');
         this.container.adds(this.label, this.input, this.value);
         this.input.on('over', () => {
