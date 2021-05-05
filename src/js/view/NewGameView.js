@@ -1,66 +1,63 @@
 const Mx = require("../lib/mx");
 const MenuButtonComponent = require("./gui/components/MenuButtonComponent");
 const MenuTitleComponent = require("./gui/components/MenuTitleComponent");
-const MenuBackgroundAnimation = require("./gui/misc/MenuBackgroundAnimation");
-const VersionInfo = require("./gui/misc/VersionInfo");
-const Cursor = require("./gui/misc/Cursor");
 const SeedInputComponent = require("./gui/components/SeedInputComponent");
 const GameMode = require("../const/game-mode.enum");
 const characterTemplates = require('./../../assets/json/characters.json');
 const CharacterSelectionButtonComponent = require("./gui/components/CharacterSelectionButtonComponent");
-const NofSelectedCharactersDisplay = require("./gui/misc/NofSelectedCharactersDisplay");
 const LoadingView = require("./LoadingView");
+const { scaleAndCenterLayer, genericMenuViewUpdate } = require("../util/viewsUtil");
 
 module.exports = class NewGameView extends Mx.View {
 
     onCreate() {
         this.rng = Mx.Rng.fromMathRandom();
-        this.title = new MenuTitleComponent('New game');
-        this.seedInput = new SeedInputComponent();
         this.selectedMode = GameMode.MEDIUM;
-        this.easyModeButton = new MenuButtonComponent('Easy', 32, () => this.onModeButtonToggle(GameMode.EASY));
-        this.mediumModeButton = new MenuButtonComponent('Medium', 32, () => this.onModeButtonToggle(GameMode.MEDIUM)).disable();
-        this.hardModeButton = new MenuButtonComponent('Hard', 32, () => this.onModeButtonToggle(GameMode.HARD));
         this.selectedCharacterIds = [];
+        this.title = new MenuTitleComponent('New game');
+        this.title.place(0, -180);
+        this.seedInput = new SeedInputComponent();
+        this.seedInput.place(-20, -98);
+        this.easyModeButton = new MenuButtonComponent('Easy', 32, () => this.onModeButtonToggle(GameMode.EASY));
+        this.easyModeButton.place(-300, -20);
+        this.mediumModeButton = new MenuButtonComponent('Medium', 32, () => this.onModeButtonToggle(GameMode.MEDIUM)).disable();
+        this.mediumModeButton.place(-300, 50);
+        this.hardModeButton = new MenuButtonComponent('Hard', 32, () => this.onModeButtonToggle(GameMode.HARD));
+        this.hardModeButton.place(-300, 120);
         this.characterSelectionButtons = characterTemplates.map(t => new CharacterSelectionButtonComponent(t, (t, state) => this.onCharacterToggle(t, state)));
+        this.characterSelectionButtons.forEach((b, i) => {
+            const x = - 165 + (i % 4) * 110;
+            const y = i > 3 ? 95: -15;
+            b.place(x, y);
+        });
+        this.nofSelectedText = Mx.Text.create(300, -10, '', '#999999', 40, 'pixel', 0, 1, 'center');
         this.resetButton = new MenuButtonComponent('Reset', 32, () => this.onReset(), true);
+        this.resetButton.place(300, 50);
         this.randomizeButton = new MenuButtonComponent('', 'Dice', () => this.onRandomize(), true);
-        this.playButton = new MenuButtonComponent('Play', 48, () => this.startNewGame()).disable();
+        this.randomizeButton.place(300, 120);
+        this.playButton = new MenuButtonComponent('Play', 48, () => this.startNewGame());
+        this.playButton.place(-105, 200);
         this.returnButton = new MenuButtonComponent('Return', 48, () => this.game.toView(require("./MainMenuView")));
+        this.returnButton.place(105, 200);
+        this.guiLayer = Mx.Layer.create({
+            entities: [
+                this.title,
+                this.seedInput, 
+                this.easyModeButton, this.mediumModeButton, this.hardModeButton,
+                ...this.characterSelectionButtons, 
+                this.nofSelectedText, this.resetButton, this.randomizeButton,
+                this.playButton, this.returnButton
+            ]
+        });
+        this.setPlayButtonState();
     }
 
     onResize() {
-        const {width: vw, height: vh} = this.handler.canvas;
-        this.title.place(vw/2, vh/2 - 180);
-        this.seedInput.place(vw/2 - 20, vh/2 - 98);
-        this.easyModeButton.place(vw/2 - 300, vh/2 - 20);
-        this.mediumModeButton.place(vw/2 - 300, vh/2 + 50);
-        this.hardModeButton.place(vw/2 - 300, vh/2 + 120);
-        this.characterSelectionButtons.forEach((b, i) => {
-            const x = vw/2 - 165 + (i % 4) * 110;
-            const y = vh/2 + (i > 3 ? 95: -15);
-            b.place(x, y);
-        });
-        this.resetButton.place(vw/2 + 300, vh/2 + 50);
-        this.randomizeButton.place(vw/2 + 300, vh/2 + 120);
-        this.playButton.place(vw/2 - 105, vh/2 + 200);
-        this.returnButton.place(vw/2 + 105, vh/2 + 200);
+        scaleAndCenterLayer(this.guiLayer, this.handler);
     }
 
     onUpdate() {
-        this.handler.clear();
-        MenuBackgroundAnimation.handle(this.handler, this.input);
-        this.handler.handles([
-            this.title,
-            this.seedInput, 
-            this.easyModeButton, this.mediumModeButton, this.hardModeButton,
-            ...this.characterSelectionButtons, 
-            this.resetButton, this.randomizeButton,
-            this.playButton, this.returnButton
-        ]);
-        NofSelectedCharactersDisplay.handle(this.handler, this.input, this.selectedCharacterIds);
-        VersionInfo.handle(this.handler);
-        Cursor.draw(this.handler, this.input);
+        genericMenuViewUpdate(this.handler, this.input, this.guiLayer);
     }
 
     onModeButtonToggle(mode) {
@@ -121,9 +118,12 @@ module.exports = class NewGameView extends Mx.View {
     }
 
     setPlayButtonState() {
+        this.nofSelectedText.content = `${this.selectedCharacterIds.length} of 3`;
         if(this.selectedCharacterIds.length === 3) {
+            this.nofSelectedText.color = '#ffffff';
             this.playButton.enable();
         } else {
+            this.nofSelectedText.color = '#999999';
             this.playButton.disable();
         }
     }

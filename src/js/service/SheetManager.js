@@ -12,4 +12,5 @@ module.exports = class SheetManager {
     static characterSelectBackground = this._load('characterSelectBackground', 24, 24);
     static buttonDice = this._load('buttonDice', 32, 16);
     static loadingBar = this._load('loadingBar', 64, 16);
+    static speechbubble = this._load('speechbubble', 16, 16);
 }

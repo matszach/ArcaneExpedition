@@ -6,8 +6,7 @@ module.exports = class WorldBuilder {
         this.isFinished = false;
     }
 
-    build() {
-        // MOCK
+    _TEST_mockProgress() {
         setInterval(() => {
             if(!this.isFinished) {
                 this.completionState += Math.random()/10;
@@ -16,6 +15,10 @@ module.exports = class WorldBuilder {
                 }
             }
         }, 500);
+    }
+
+    build(args) {
+        this._TEST_mockProgress();
     }
 
 }
