@@ -39,7 +39,7 @@ module.exports = class LoadingView extends Mx.View {
         const ids = this.rng.shuffle(attr.partyMembers);
         return ids.map(id => {
             const template = characterTemplates.find(t => t.id === id);
-            return SheetManager.characters.get(0, template.y);
+            return SheetManager.characters.get(template.spriteX, template.spriteY);
         });
     }
 

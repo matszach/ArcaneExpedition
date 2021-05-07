@@ -25,9 +25,10 @@ module.exports = class CharacterSelectionButtonComponent extends Mx.Gui.GuiCompo
     }
 
     construct() {
+        const template = this.options.characterTemplate;
         this.background = SheetManager.characterSelectBackground.get(0, 0);
-        this.characterIcon = SheetManager.characters.get(0, this.options.characterTemplate.y).move(0, 5);
-        this.characterName = Mx.Text.create(0, -25, this.options.characterTemplate.name, '#999999', 20, 'pixel', 0, 1, 'center');
+        this.characterIcon = SheetManager.characters.get(template.spriteX, template.spriteY).move(0, 5);
+        this.characterName = Mx.Text.create(0, -25, template.name, '#999999', 20, 'pixel', 0, 1, 'center');
         this.container.adds(this.background, this.characterIcon, this.characterName);
         this.on('over', () => {
             if(!this.selected) {
@@ -41,7 +42,7 @@ module.exports = class CharacterSelectionButtonComponent extends Mx.Gui.GuiCompo
             Cursor.key = 'arrow';
         }).on('up', () => {
             this.selected = !this.selected;
-            this.options.change(this.options.characterTemplate, this.selected);
+            this.options.change(template, this.selected);
             if(this.selected) {
                 this.background.setFrame(0, 2);
                 this.characterName.color = '#ffffff';
