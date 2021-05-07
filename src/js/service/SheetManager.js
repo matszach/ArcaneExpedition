@@ -13,4 +13,5 @@ module.exports = class SheetManager {
     static buttonDice = this._load('buttonDice', 32, 16);
     static loadingBar = this._load('loadingBar', 64, 16);
     static speechbubble = this._load('speechbubble', 16, 16);
+    static mapfields = this._load('mapfields', 16, 16);
 }

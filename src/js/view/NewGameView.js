@@ -6,7 +6,8 @@ const GameMode = require("../const/game-mode.enum");
 const characterTemplates = require('./../../assets/json/characters.json');
 const CharacterSelectionButtonComponent = require("./gui/components/CharacterSelectionButtonComponent");
 const LoadingView = require("./LoadingView");
-const { scaleAndCenterLayer, genericMenuViewUpdate } = require("../util/viewsUtil");
+const { scaleAndCenterLayers, genericMenuViewUpdate } = require("../util/viewsUtil");
+const { seed } = require("../util/random");
 
 module.exports = class NewGameView extends Mx.View {
 
@@ -53,7 +54,7 @@ module.exports = class NewGameView extends Mx.View {
     }
 
     onResize() {
-        scaleAndCenterLayer(this.guiLayer, this.handler);
+        scaleAndCenterLayers(this.handler, this.guiLayer);
     }
 
     onUpdate() {
@@ -103,15 +104,9 @@ module.exports = class NewGameView extends Mx.View {
         this.setPlayButtonState();
     }
 
-    generateRandomSeed() {
-        const chars = '1234567890QWERTYUIOPASDFGHJKLZXCVBNM'.split('');
-        const seed = this.rng.choices(chars, 12, false).join('');
-        return seed;
-    }
-
     getNewGameAttributes() {
         return {
-            seed: this.seedInput.value.content || this.generateRandomSeed(),
+            seed: this.seedInput.value.content || seed(this.rng),
             mode: this.selectedMode,
             partyMembers: this.selectedCharacterIds
         };

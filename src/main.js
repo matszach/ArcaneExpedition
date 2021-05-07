@@ -4,9 +4,9 @@ const path = require('path')
 app.whenReady().then(() => {
   const win = new BrowserWindow({
     width: 1200,
-    minWidth: 900,
+    minWidth: 600,
     height: 800,
-    minHeight: 600,
+    minHeight: 400,
     icon: path.join(__dirname, 'assets/img/favicon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'js/preload.js')

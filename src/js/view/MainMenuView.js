@@ -1,7 +1,7 @@
 const Mx = require("../lib/mx");
 const MenuButtonComponent = require("./gui/components/MenuButtonComponent");
 const MenuTitleComponent = require("./gui/components/MenuTitleComponent");
-const { scaleAndCenterLayer, genericMenuViewUpdate } = require("../util/viewsUtil");
+const { scaleAndCenterLayers, genericMenuViewUpdate } = require("../util/viewsUtil");
 
 module.exports = class MainMenuView extends Mx.View {
 
@@ -25,7 +25,7 @@ module.exports = class MainMenuView extends Mx.View {
     }
 
     onResize() {
-        scaleAndCenterLayer(this.guiLayer, this.handler)
+        scaleAndCenterLayers(this.handler, this.guiLayer)
     }
 
     onUpdate() {
