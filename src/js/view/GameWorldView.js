@@ -4,7 +4,7 @@ const VersionInfo = require("./gui/misc/VersionInfo");
 const Cursor = require("./gui/misc/Cursor");
 const SheetManager = require("../service/SheetManager");
 
-module.exports = class GameWorldView extends Mx.View {
+module.exports = class GameWordlView extends Mx.View {
 
     onCreate() {
         const map = this.game.state.gameState.worldmap;
@@ -24,8 +24,7 @@ module.exports = class GameWorldView extends Mx.View {
             mapContainer.add(fieldSprite);
         });
         map.spriteContainerRef = mapContainer;
-        const {x, y} = mapContainer.getCenter();
-        mapContainer.move(-x, -y);
+        mapContainer.centerOn(0, 0)
         this.mapLayer = Mx.Layer.create({ vpX: 0, vpY: 0, vpScale: 1, entities: [mapContainer] });
     }
 
