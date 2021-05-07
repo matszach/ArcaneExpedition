@@ -16,5 +16,4 @@ module.exports = class GameWordlView extends Mx.View {
     onUpdate() {
         genericMenuViewUpdate(this.handler, this.input, this.mapLayer)
     }
-
 }

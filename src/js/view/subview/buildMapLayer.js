@@ -4,7 +4,7 @@ const SheetManager = require("../../service/SheetManager");
 module.exports = function buildMapLayer(view) {
     const mapContainer = Mx.Container.create();
     view.worldMap.fields.forEach((f, x, y) => {
-        const fieldSprite = SheetManager.mapfields.get(Math.floor(Math.random() * 9), 0);
+        const fieldSprite = SheetManager.mapfields.get(Math.floor(Math.random() * 10), 0);
         fieldSprite.setDrawnSize(32, 32);
         fieldSprite.place(x * 34, y * 34);
         f.spriteRef = fieldSprite;
