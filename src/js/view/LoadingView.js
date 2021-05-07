@@ -5,8 +5,8 @@ const characterTemplates = require('./../../assets/json/characters.json');
 const CharacterJumpJiggleAnimation = require('./../animations/CharacterJumpJiggleAnimation');
 const { scaleAndCenterLayers, genericMenuViewUpdate } = require("../util/viewsUtil");
 const MenuButtonComponent = require("./gui/components/MenuButtonComponent");
-const GameplayView = require("./GameplayView");
 const SpeechBubbleEntity = require("./gui/game-entities/SpeechBubbleEntity");
+const GameWorldView = require("./GameWorldView");
 
 module.exports = class LoadingView extends Mx.View {
 
@@ -84,7 +84,7 @@ module.exports = class LoadingView extends Mx.View {
 
     toGameplay() {
         this.game.state.gameState = this.gsBuilder.state;
-        this.game.toView(GameplayView);
+        this.game.toView(GameWorldView);
     }
 
 }

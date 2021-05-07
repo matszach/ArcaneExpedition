@@ -62,6 +62,7 @@ module.exports = class NewGameView extends Mx.View {
     }
 
     onModeButtonToggle(mode) {
+        this.selectedMode = mode;
         if(mode === GameMode.EASY) {
             this.easyModeButton.disable();
             this.mediumModeButton.enable();

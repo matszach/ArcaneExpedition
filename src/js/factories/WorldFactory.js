@@ -12,8 +12,9 @@ module.exports = class WorldFactory extends Factory {
 
     create(args) {
         const world = new WorldMap(args.mode);
-        const worldSideSize = 15 + 2 * args.mode;
-        world.fields = new Mx.Ds.Array2D(worldSideSize, worldSideSize);
+        const worldWidth = 16 + 1 * args.mode;
+        const worldHeight = 13 + 1 * args.mode;
+        world.fields = new Mx.Ds.Array2D(worldWidth, worldHeight);
         world.fields.map((v, x, y) => this.fieldFactory.create({x, y}));
         return world;
     }

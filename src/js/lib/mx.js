@@ -3,7 +3,7 @@
  * Collection of tools that can be used to create games  with JS and HTML5 canvas
  * @author Lukasz Kaszubowski (matszach)
  * @see https://github.com/matszach
- * @version 0.21.0
+ * @version 0.21.1
  */
 
 /** ===== ===== ===== ===== ===== ===== ===== ===== ===== =====
@@ -2150,6 +2150,14 @@ const Mx = {
                 return `rgba(${r}, ${g}, ${b}, ${a})`;
             },
 
+            hsl(h, s, l = 50) {
+                return `hsl(${h}, ${s}%, ${l}%)`;
+            },
+
+            hsla(h, s, l = 50, a= 1) {
+                return `hsla(${h}, ${s}%, ${l}%, ${a})`;
+            }
+
         },
 
         CanvasHandler: class {
@@ -2557,7 +2565,7 @@ const Mx = {
             write(x, y, content, color = 'black', size = 12, font = 'Arial monospaced', rotation = 0, alpha = 1, align = 'start') {
                 this.context.save();
                 this.context.textAlign = align;
-                this.context.globalAlpha = alpha;
+                this.context.globalAlpha = alpha; // TODO change to accomodate layer alpha
                 this.context.translate(x, y); 
                 this.context.rotate(rotation);
                 this._fillStyle(color);
@@ -2573,7 +2581,7 @@ const Mx = {
                 drawnWidth = spriteWidth, drawnHeight = spriteHeight, rotation = 0, alpha = 1, mirrored = false
             ) {
                 this.context.save();
-                this.context.globalAlpha = alpha;
+                this.context.globalAlpha = alpha; // TODO change to accomodate layer alpha
                 this.context.translate(x, y);
                 this.context.rotate(rotation);
                 if(mirrored) {
