@@ -13,6 +13,14 @@ module.exports = {
             layer.setViewportScale(scale);
         }
     },
+
+    scaleAndAlignLayersToLeftTop(handler, ...layers) {
+        const {width, height} = handler.canvas;
+        const scale = Math.min(width/800, height/600);
+        for(let layer of layers) {
+            layer.setViewportScale(scale);
+        }
+    },
     
     genericMenuViewUpdate(handler, input, ...layers) {
         handler.clear();
