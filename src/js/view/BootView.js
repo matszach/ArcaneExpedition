@@ -20,7 +20,7 @@ module.exports = class BootView extends Mx.View {
     }
 
     onUpdate() {
-        genericMenuViewUpdate(this.handler, this.input, this.guiLayer);
+        genericMenuViewUpdate(this.handler, this.input, 0.7, this.guiLayer);
     }
 
 }

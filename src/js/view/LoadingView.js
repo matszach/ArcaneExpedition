@@ -32,7 +32,7 @@ module.exports = class LoadingView extends Mx.View {
     onUpdate() {
         this.handleAnimations();
         this.handleGSBuilderStateChange();
-        genericMenuViewUpdate(this.handler, this.input, this.guiLayer, this.particleLayer);
+        genericMenuViewUpdate(this.handler, this.input, 0.7, this.guiLayer, this.particleLayer);
     }
 
     createCharacterAvatars(attr) {

@@ -22,9 +22,9 @@ module.exports = {
         }
     },
     
-    genericMenuViewUpdate(handler, input, ...layers) {
+    genericMenuViewUpdate(handler, input, backgroundAlpha, ...layers) {
         handler.clear();
-        MenuBackgroundAnimation.handle(handler, input);
+        MenuBackgroundAnimation.handle(handler, input, backgroundAlpha);
         handler.handleLayers(...layers);
         VersionInfo.handle(handler);
         Cursor.draw(handler, input);

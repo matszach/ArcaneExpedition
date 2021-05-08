@@ -1,21 +1,27 @@
 const Mx = require("../../../lib/mx");
+const SheetManager = require("./../../../service/SheetManager");
 
 module.exports = class MenuBackgroundAnimation {
 
-    static SIZE = 20;
+    static rng = Mx.Rng.create();
 
-    static handle(handler, input) {
-        const {xInCanvas: mx, yInCanvas: my} = input.mouse();
-        for(let x = 0; x < handler.canvas.width + 20; x += 1.5 * this.SIZE) {
-            for(let y = 0; y < handler.canvas.height + 20; y += 1.5 * this.SIZE) {
-                const dist = Mx.Geo.Distance.simple(x, y, mx, my);
-                const alpha = 0.5 - dist / 2000;
-                if(alpha > 0) {
-                    const color = Mx.Draw.Color.rgba(100, 50, 0, alpha)
-                    handler.fillRect(x - 0.5 * this.SIZE, y - 0.5 * this.SIZE, this.SIZE, this.SIZE, color);
-                }
+    static handle(handler, input, alpha = 1) {
+        const spriteSize = 48 * 4;
+        const {width, height} = handler.canvas;
+        const widthInTiles = Math.ceil(width / spriteSize) + 1;
+        const heightInTiles = Math.ceil(height / spriteSize) + 1;
+        const offsetX = (widthInTiles * spriteSize - width) / 2; 
+        const offsetY = (heightInTiles * spriteSize - height) / 2; 
+        for(let x = 0; x < widthInTiles; x++) {
+            for(let y = 0; y < heightInTiles; y++) {
+                const state = 2 * x + y + x * (y + 2); 
+                MenuBackgroundAnimation.rng.setState(state);
+                const sprite = SheetManager.backgroundTiles.get(MenuBackgroundAnimation.rng.int(0, 6), 0);
+                sprite.place(- offsetX + x * spriteSize, - offsetY + y * spriteSize).setAlpha(alpha);
+                handler.draw(sprite);
             }
         }
+
     }
 
 }

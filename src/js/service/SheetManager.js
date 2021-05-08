@@ -16,4 +16,6 @@ module.exports = class SheetManager {
     static mapfields = this._load('mapfields', 16, 16);
     static buttonParty = this._load('buttonParty', 16, 16);
     static buttonOptions = this._load('buttonOptions', 16, 16);
+    static backgroundTiles = this._load('backgroundTiles', 48, 48);
+    static windowBorder = this._load('windowBorder', 32, 32);
 }
