@@ -9,7 +9,7 @@ module.exports = class InnerWindowBackgroundComponent extends Mx.Gui.GuiComponen
 
     construct() {
         this.spriteSize = 32 * 2;
-        this.color = Mx.Draw.Color.rgba(0, 0, 0, 0.8);
+        this.color = Mx.Draw.Color.rgba(20, 10, 0, 0.95);
         this.trueWidth = this.options.width * this.spriteSize;
         this.trueHeight = this.options.height * this.spriteSize;
         this.makeBackground();
