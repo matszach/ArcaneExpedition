@@ -1,74 +1,74 @@
 [
     {
-        "id": 0,
-        "key": "QUEST",
-        "name": "Quest",
-        "spriteX": 1,
-        "spriteY": 0,
-        "rarity": 0
+      "id": 0,
+      "key": "QUEST",
+      "name": "Quest",
+      "spriteX": 1,
+      "spriteY": 0,
+      "rarity": 0
     },
     {
-        "id": 1,
-        "key": "PLAINS",
-        "name": "Plains",
-        "spriteX": 2,
-        "spriteY": 0,
-        "rarity": 3
+      "id": 1,
+      "key": "PLAINS",
+      "name": "Plains",
+      "spriteX": 2,
+      "spriteY": 0,
+      "rarity": 20
     },
     {
-        "id": 2,
-        "key": "LAKE",
-        "name": "Lake",
-        "spriteX": 3,
-        "spriteY": 0,
-        "rarity": 2
+      "id": 2,
+      "key": "LAKE",
+      "name": "Lake",
+      "spriteX": 3,
+      "spriteY": 0,
+      "rarity": 4
     },
     {
-        "id": 3,
-        "key": "FORREST",
-        "name": "Forest",
-        "spriteX": 4,
-        "spriteY": 0,
-        "rarity": 2
+      "id": 3,
+      "key": "FORREST",
+      "name": "Forest",
+      "spriteX": 4,
+      "spriteY": 0,
+      "rarity": 7
     },
     {
-        "id": 4,
-        "key": "ROCKY",
-        "name": "Rocky terrain",
-        "spriteX": 5,
-        "spriteY": 0,
-        "rarity": 2
+      "id": 4,
+      "key": "ROCKY",
+      "name": "Rocky terrain",
+      "spriteX": 5,
+      "spriteY": 0,
+      "rarity": 4
     },
     {
-        "id": 5,
-        "key": "TOWER",
-        "name": "Tower",
-        "spriteX": 6,
-        "spriteY": 0,
-        "rarity": 1
+      "id": 5,
+      "key": "TOWER",
+      "name": "Tower",
+      "spriteX": 6,
+      "spriteY": 0,
+      "rarity": 1
     },
     {
-        "id": 6,
-        "key": "CAMP",
-        "name": "Camp",
-        "spriteX": 7,
-        "spriteY": 0,
-        "rarity": 1
+      "id": 6,
+      "key": "CAMP",
+      "name": "Camp",
+      "spriteX": 7,
+      "spriteY": 0,
+      "rarity": 2
     },
     {
-        "id": 7,
-        "key": "SHOP",
-        "name": "Shop",
-        "spriteX": 8,
-        "spriteY": 0,
-        "rarity": 0
+      "id": 7,
+      "key": "SHOP",
+      "name": "Shop",
+      "spriteX": 8,
+      "spriteY": 0,
+      "rarity": 0
     },
     {
-        "id": 8,
-        "key": "MOUNTAIN",
-        "name": "Mountain",
-        "spriteX": 9,
-        "spriteY": 0,
-        "rarity": 2
+      "id": 8,
+      "key": "MOUNTAIN",
+      "name": "Mountain",
+      "spriteX": 9,
+      "spriteY": 0,
+      "rarity": 4
     }
 ]
