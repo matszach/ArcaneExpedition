@@ -30,7 +30,7 @@ module.exports = class PartyFactory extends Factory {
         let nx = 0;
         let ny = 0;
         worldMap.fields.forEach((v, x, y) => {
-            if(x === 0 || y === 0 || x === worldMap.fields.xSize - 1 || y === worldMap.fields.ySize) {
+            if(x === 0 || y === 0 || x === worldMap.fields.xSize - 1 || y === worldMap.fields.ySize - 1) {
                 return;
             }
             const distances = [];

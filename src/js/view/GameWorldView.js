@@ -42,18 +42,22 @@ module.exports = class GameWordlView extends Mx.View {
             fieldSprite.place(x * 34, y * 34);
             f.spriteRef = fieldSprite;
             fieldSprite.on('down', () => {
-                fieldSprite.scale(0.9);
+                // 
             }).on('up', () => {
-                fieldSprite.scale(1/0.9);
-                console.log(x, y); // TODO on field clicked here
+                console.log(x, y); // TODO on field clicked here (or on a field marker sprite?)
             }).on('over', () => {
-                fieldSprite.scale(1.05);
+                // TODO display <field name> (<visited state>) on top of the screen
             }).on('out', () => {
-                fieldSprite.scale(1/1.05);
+                // TODO hdie that 'tip' ^
             });
             // f.hide();
             mapContainer.add(fieldSprite);
         });
+        const partyMarker = SheetManager.mapMarkers.get(0, 0);
+        partyMarker.setDrawnSize(32, 32);
+        partyMarker.place(this.party.position.x * 34, this.party.position.y * 34);
+        // TODO add marker ref to party ?
+        mapContainer.add(partyMarker);
         this.worldMap.spriteContainerRef = mapContainer;
         mapContainer.centerOn(0, 0)
         return Mx.Layer.create({ entities: [mapContainer] });
@@ -79,7 +83,7 @@ module.exports = class GameWordlView extends Mx.View {
     }
 
     buildPartyLayer() {
-        const background = new InnerWindowBackgroundComponent(9, 7);
+        const background = new InnerWindowBackgroundComponent(10, 7);
         return Mx.Layer.create({ entities: [background] });   
     }
 
