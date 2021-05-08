@@ -33,6 +33,8 @@ module.exports = class GameStateBuilder {
             const world = wf.create(args);
             const pf = new PartyFactory(this.rng);
             const party = pf.create(args);
+            pf.place(party, world);
+            console.log(party);
             const state = new GameState(world, party);
             this.state = state
             this.isFinished = true;

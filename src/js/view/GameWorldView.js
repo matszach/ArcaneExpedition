@@ -10,6 +10,7 @@ module.exports = class GameWordlView extends Mx.View {
 
     onCreate() {
         this.worldMap = this.game.state.gameState.worldmap;
+        this.party = this.game.state.gameState.party;
         this.mapLayer = this.buildMapLayer();
         this.guiLayer = this.buildGuiLayer();
         this.partyLayer = this.buildPartyLayer().hide();
@@ -50,6 +51,7 @@ module.exports = class GameWordlView extends Mx.View {
             }).on('out', () => {
                 fieldSprite.scale(1/1.05);
             });
+            // f.hide();
             mapContainer.add(fieldSprite);
         });
         this.worldMap.spriteContainerRef = mapContainer;
@@ -58,11 +60,11 @@ module.exports = class GameWordlView extends Mx.View {
     }
 
     buildGuiLayer() {
-        this.partyButton = new MenuButtonComponent('', 'Party', () => this.toggleSubViewLayer('party'), false);
+        this.partyButton = new MenuButtonComponent('', 'Party', () => this.toggleSubViewLayer('party'), true);
         this.partyButton.place(36, 40);
-        this.optionsButton = new MenuButtonComponent('', 'Options', () => this.toggleSubViewLayer('options'), false);
+        this.optionsButton = new MenuButtonComponent('', 'Options', () => this.toggleSubViewLayer('options'), true);
         this.optionsButton.place(36, 108);
-        this.exitButton = new MenuButtonComponent('', 'Exit', () => this.toggleSubViewLayer('exit'), false);
+        this.exitButton = new MenuButtonComponent('', 'Exit', () => this.toggleSubViewLayer('exit'), true);
         this.exitButton.place(36, 176);
         return Mx.Layer.create({ entities: [this.partyButton, this.optionsButton, this.exitButton] });
     }
@@ -89,12 +91,10 @@ module.exports = class GameWordlView extends Mx.View {
     buildExitMenuLayer() {
         const background = new InnerWindowBackgroundComponent(5, 3);
         const message = Mx.Text.create(0, -30, 'Exit to menu?', '#ffffff', 40, 'pixel', 0, 1, 'center');
-        const confirm = ActiveText.create(-80, 50, 'OK', '#ffffff', 40, 'pixel', 0, 1, 'center').setAction(() => {
-            this.game.toView(BootView)
-        })
-        const cancel = ActiveText.create(80, 50, 'Cancel', '#ffffff', 40, 'pixel', 0, 1, 'center').setAction(() => {
-            this.toggleSubViewLayer('exit')
-        })
+        const confirm = ActiveText.create(-80, 50, 'OK', '#ffffff', 40, 'pixel', 0, 1, 'center');
+        confirm.setAction(() => this.game.toView(BootView));
+        const cancel = ActiveText.create(80, 50, 'Cancel', '#ffffff', 40, 'pixel', 0, 1, 'center');
+        cancel.setAction(() => this.toggleSubViewLayer('exit'));
         return Mx.Layer.create({ entities: [background, message, confirm, cancel] });   
     }
 

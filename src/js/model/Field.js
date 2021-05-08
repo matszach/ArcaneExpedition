@@ -10,7 +10,7 @@ module.exports = class Field {
         this.spriteX = spriteX;
         this.spriteY = spriteY;
         this.eventSeed = eventSeed;
-        this.explored = false;
+        this.discovered = false;
         this.visited = false;
         this.spriteRef = null;
     }
@@ -23,6 +23,18 @@ module.exports = class Field {
             y: this.y,
             typeId: this.typeId
         });
+    }
+
+    hide() {
+        this.discovered = false;
+        this.spriteRef.setFrame(0, 0);
+        return this;
+    }
+
+    show() {
+        this.discovered = true;
+        this.spriteRef.setFrame(this.spriteX, this.spriteY);
+        return this;
     }
 
 } 
