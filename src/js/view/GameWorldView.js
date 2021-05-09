@@ -5,6 +5,7 @@ const BootView = require("./BootView");
 const ActiveText = require("./gui/components/ActiveText");
 const InnerWindowBackgroundComponent = require("./gui/components/InnerWindowBackgroundComponent");
 const MenuButtonComponent = require("./gui/components/MenuButtonComponent");
+const Cursor = require("./gui/misc/Cursor");
 
 module.exports = class GameWordlView extends Mx.View {
 
@@ -16,6 +17,7 @@ module.exports = class GameWordlView extends Mx.View {
         this.partyLayer = this.buildPartyLayer().hide();
         this.optionsLayer = this.buildOptionsLayer().hide();
         this.exitLayer = this.buildExitMenuLayer().hide();
+        this.revealAreaAroundPartyLocation();
     }
 
     onResize() {
@@ -31,36 +33,63 @@ module.exports = class GameWordlView extends Mx.View {
             this.handler, this.input, 0.3, 
             this.mapLayer, this.guiLayer, this.partyLayer, this.optionsLayer, this.exitLayer
         );
+        this.handler.displayDebugInfo(this.loop, 'red');
     }
     
     // create
     buildMapLayer() {
         const mapContainer = Mx.Container.create();
+        // over map hover text
+        const hoverTextPosition = this.worldMap.fields.xSize * 34 / 2;
+        const hoverText = Mx.Text.create(hoverTextPosition, -30, '', '#ffffff', 20, 'pixel', 0, 1, 'center');
+        mapContainer.add(hoverText);
+        // map fields
         this.worldMap.fields.forEach((f, x, y) => {
             const fieldSprite = SheetManager.mapfields.get(f.spriteX, f.spriteY);
             fieldSprite.setDrawnSize(32, 32);
             fieldSprite.place(x * 34, y * 34);
+            fieldSprite.on('over', () => hoverText.content = f.getTooltip());
+            fieldSprite.on('out', () => hoverText.content = '');
             f.spriteRef = fieldSprite;
-            fieldSprite.on('down', () => {
-                // 
-            }).on('up', () => {
-                console.log(x, y); // TODO on field clicked here (or on a field marker sprite?)
-            }).on('over', () => {
-                // TODO display <field name> (<visited state>) on top of the screen
-            }).on('out', () => {
-                // TODO hdie that 'tip' ^
-            });
-            // f.hide();
             mapContainer.add(fieldSprite);
+            f.hide();
         });
-        const partyMarker = SheetManager.mapMarkers.get(0, 0);
-        partyMarker.setDrawnSize(32, 32);
-        partyMarker.place(this.party.position.x * 34, this.party.position.y * 34);
-        // TODO add marker ref to party ?
-        mapContainer.add(partyMarker);
+        // party markers
+        const {x: px, y: py} = this.party.position;
+        const pmCenter = this.getMapMarkerSprite(0, 0, px, py);
+        const pmRight = this.getMapMarkerSprite(1, 0, px + 1, py, 0, true, 1, 0);
+        const pmLeft = this.getMapMarkerSprite(1, 0, px - 1, py, Math.PI, true, -1, 0);
+        const pmUp = this.getMapMarkerSprite(1, 0, px, py - 1, Math.PI * -0.5, true, 0, -1);
+        const pmDown = this.getMapMarkerSprite(1, 0, px, py + 1, Math.PI * 0.5, true, 0, +1);
+        const pmContainer = Mx.Container.of([pmCenter, pmRight, pmLeft, pmUp, pmDown]);
+        this.party.guiRefs = {pmCenter, pmRight, pmLeft, pmUp, pmDown, pmContainer};
+        mapContainer.add(pmContainer);
+        // finalisation
         this.worldMap.spriteContainerRef = mapContainer;
-        mapContainer.centerOn(0, 0)
+        mapContainer.centerOn(0, 0);
         return Mx.Layer.create({ entities: [mapContainer] });
+    }
+
+    getMapMarkerSprite(spriteX, spriteY, posX, posY, rotation = 0, isArrow = false, dirX = undefined, dirY = undefined) {
+        const sprite = SheetManager.mapMarkers.get(spriteX, spriteY);
+        sprite.setDrawnSize(32, 32);
+        sprite.place(posX * 34, posY * 34);
+        sprite.setRotation(rotation);
+        if(isArrow) {
+            sprite.on('over', () => {
+                sprite.setFrame(2, 0);
+                Cursor.key = 'pointer';
+            }).on('out', () => {
+                sprite.setFrame(1, 0);
+                Cursor.key = 'key';
+            }).on('down', () => {
+                sprite.scale(0.9);
+            }).on('up', () => {
+                this.partyMovement(dirX, dirY);
+                sprite.scale(1/0.9);
+            });
+        }
+        return sprite;
     }
 
     buildGuiLayer() {
@@ -97,9 +126,26 @@ module.exports = class GameWordlView extends Mx.View {
         const message = Mx.Text.create(0, -30, 'Exit to menu?', '#ffffff', 40, 'pixel', 0, 1, 'center');
         const confirm = ActiveText.create(-80, 50, 'OK', '#ffffff', 40, 'pixel', 0, 1, 'center');
         confirm.setAction(() => this.game.toView(BootView));
-        const cancel = ActiveText.create(80, 50, 'Cancel', '#ffffff', 40, 'pixel', 0, 1, 'center');
+        const cancel = ActiveText.create(60, 50, 'Cancel', '#ffffff', 40, 'pixel', 0, 1, 'center');
         cancel.setAction(() => this.toggleSubViewLayer('exit'));
         return Mx.Layer.create({ entities: [background, message, confirm, cancel] });   
+    }
+
+    // gameplay logic
+    partyMovement(dx, dy) {
+        this.party.travel(dx, dy, this.worldMap);
+        this.revealAreaAroundPartyLocation();
+    }
+
+    revealAreaAroundPartyLocation() {
+        const {x: px, y: py} = this.party.position;
+        const range = this.worldMap.fields.get(px, py).revealRange;
+        this.worldMap.fields.forEach((field, x, y) => {
+            console.log(Mx.Geo.Distance.simple(x, y, px, py), x, y, px, py);
+            if(Mx.Geo.Distance.simple(x, y, px, py) <= range) {
+                field.show();
+            }
+        });
     }
 
 }

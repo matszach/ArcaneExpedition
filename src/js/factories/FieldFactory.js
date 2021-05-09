@@ -11,8 +11,10 @@ module.exports = class FieldFactory extends Factory {
             args.x, 
             args.y,
             template.id,
+            template.name,
             template.spriteX,
             template.spriteY,
+            template.revealRange,
             seed(this.rng)
         );
     }

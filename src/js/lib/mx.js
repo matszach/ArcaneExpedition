@@ -789,7 +789,11 @@ const Mx = {
     
         _getDrawn(canvasHandler) {
             if(!this.hidden) {
-                this.forChild(c => c._getDrawn(canvasHandler))
+                this.forChild(c => {
+                    if(!c.hidden) {
+                        c._getDrawn(canvasHandler);
+                    }
+                });
             }
         }
 

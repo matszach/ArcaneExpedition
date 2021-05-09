@@ -3,12 +3,14 @@ const Mx = require("../lib/mx");
 
 module.exports = class Field {
 
-    constructor(x, y, typeId, spriteX, spriteY, eventSeed) {
+    constructor(x, y, typeId, name, spriteX, spriteY, revealRange, eventSeed) {
         this.x = x;
         this.y = y;
         this.typeId = typeId;
+        this.name = name;
         this.spriteX = spriteX;
         this.spriteY = spriteY;
+        this.revealRange = revealRange;
         this.eventSeed = eventSeed;
         this.discovered = false;
         this.visited = false;
@@ -35,6 +37,14 @@ module.exports = class Field {
         this.discovered = true;
         this.spriteRef.setFrame(this.spriteX, this.spriteY);
         return this;
+    }
+
+    getTooltip() {
+        if(this.discovered) {
+            return `${this.name}${this.visited ? ' (visited)' : ''}`;
+        } else {
+            return '???';
+        }
     }
 
 } 
