@@ -62,6 +62,8 @@ module.exports = class GameWordlView extends Mx.View {
             mapContainer.add(fieldSprite);
             if(!f.discovered) {
                 f.hide();
+            } else if(f.visited) {
+                f.visit();
             }
         });
         // party markers
@@ -163,7 +165,7 @@ module.exports = class GameWordlView extends Mx.View {
     setupEventLayerForEvent(event) {
         // TODO external logic to build this view by event
         this.eventLayer.empty();
-        const background = new InnerWindowBackgroundComponent(8, 4);
+        const background = new InnerWindowBackgroundComponent(8, 7);
         const resolve = ActiveText.create(-80, 50, 'TEST_resolve', '#ffffff', 40, 'pixel', 0, 1, 'center');
         resolve.setAction(() => this.resolveEvent());
         this.eventLayer.adds([background, resolve]);
@@ -209,7 +211,7 @@ module.exports = class GameWordlView extends Mx.View {
 
     resolveEvent() {
         const field = this.getCurrentField();
-        field.visited = true;
+        field.visit();
         this.revealAreaAroundPartyLocation(); 
         this.eventLayer.hide();
         this.eventButton.disable();

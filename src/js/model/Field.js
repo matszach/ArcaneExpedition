@@ -36,6 +36,15 @@ module.exports = class Field {
     show() {
         this.discovered = true;
         this.spriteRef.setFrame(this.spriteX, this.spriteY);
+        if(this.visited) {
+            this.visit();
+        }
+        return this;
+    }
+
+    visit() {
+        this.visited = true;
+        this.spriteRef.setFrame(this.spriteX, this.spriteY + 1);
         return this;
     }
 
