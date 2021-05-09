@@ -14,16 +14,17 @@ module.exports = class GameWordlView extends Mx.View {
         this.party = this.game.state.gameState.party;
         this.mapLayer = this.buildMapLayer();
         this.guiLayer = this.buildGuiLayer();
+        this.exitLayer = this.buildExitMenuLayer().hide();
         this.partyLayer = this.buildPartyLayer().hide();
         this.optionsLayer = this.buildOptionsLayer().hide();
-        this.exitLayer = this.buildExitMenuLayer().hide();
+        this.eventLayer = this.buildEventLayer().hide();
         this.revealAreaAroundPartyLocation();
     }
 
     onResize() {
         scaleAndCenterLayers(
             this.handler, this.mapLayer, 
-            this.partyLayer, this.optionsLayer, this.exitLayer
+            this.partyLayer, this.optionsLayer, this.exitLayer, this.eventLayer
         );
         scaleAndAlignLayersToLeftTop(this.handler, this.guiLayer);
     }
@@ -31,7 +32,8 @@ module.exports = class GameWordlView extends Mx.View {
     onUpdate() {
         genericMenuViewUpdate(
             this.handler, this.input, 0.3, 
-            this.mapLayer, this.guiLayer, this.partyLayer, this.optionsLayer, this.exitLayer
+            this.mapLayer, this.guiLayer, 
+            this.partyLayer, this.optionsLayer, this.exitLayer, this.eventLayer
         );
         this.handler.displayDebugInfo(this.loop, 'red');
     }
@@ -93,32 +95,25 @@ module.exports = class GameWordlView extends Mx.View {
     }
 
     buildGuiLayer() {
-        this.partyButton = new MenuButtonComponent('', 'Party', () => this.toggleSubViewLayer('party'), true);
-        this.partyButton.place(36, 40);
-        this.optionsButton = new MenuButtonComponent('', 'Options', () => this.toggleSubViewLayer('options'), true);
-        this.optionsButton.place(36, 108);
         this.exitButton = new MenuButtonComponent('', 'Exit', () => this.toggleSubViewLayer('exit'), true);
-        this.exitButton.place(36, 176);
-        return Mx.Layer.create({ entities: [this.partyButton, this.optionsButton, this.exitButton] });
+        this.exitButton.place(36, 40);
+        this.partyButton = new MenuButtonComponent('', 'Party', () => this.toggleSubViewLayer('party'), true);
+        this.partyButton.place(36, 108);
+        this.optionsButton = new MenuButtonComponent('', 'Options', () => this.toggleSubViewLayer('options'), true);
+        this.optionsButton.place(36, 176);
+        this.eventButton = new MenuButtonComponent('', 'Event', () => this.toggleSubViewLayer('event'), true);
+        this.eventButton.place(36, 244);
+        return Mx.Layer.create({ entities: [this.exitButton, this.partyButton, this.optionsButton, this.eventButton] });
     }
 
     toggleSubViewLayer(key) {
         const targetLayer = this[key + 'Layer'];
         const wasHidden = targetLayer.hidden;
+        this.exitLayer.hide(); 
         this.partyLayer.hide();
         this.optionsLayer.hide();
-        this.exitLayer.hide(); 
+        this.eventLayer.hide();
         targetLayer.hidden = !wasHidden;
-    }
-
-    buildPartyLayer() {
-        const background = new InnerWindowBackgroundComponent(10, 7);
-        return Mx.Layer.create({ entities: [background] });   
-    }
-
-    buildOptionsLayer() {
-        const background = new InnerWindowBackgroundComponent(4, 7);
-        return Mx.Layer.create({ entities: [background] });   
     }
 
     buildExitMenuLayer() {
@@ -131,17 +126,32 @@ module.exports = class GameWordlView extends Mx.View {
         return Mx.Layer.create({ entities: [background, message, confirm, cancel] });   
     }
 
+    buildPartyLayer() {
+        const background = new InnerWindowBackgroundComponent(10, 7);
+        return Mx.Layer.create({ entities: [background] });   
+    }
+
+    buildOptionsLayer() {
+        const background = new InnerWindowBackgroundComponent(4, 7);
+        return Mx.Layer.create({ entities: [background] });   
+    }
+
+    buildEventLayer() {
+        const background = new InnerWindowBackgroundComponent(4, 7);
+        return Mx.Layer.create({ entities: [background] });   
+    }
+
+
     // gameplay logic
     partyMovement(dx, dy) {
         this.party.travel(dx, dy, this.worldMap);
-        this.revealAreaAroundPartyLocation();
+        this.revealAreaAroundPartyLocation(); // TODO should only fire after successful event resolution
     }
 
     revealAreaAroundPartyLocation() {
         const {x: px, y: py} = this.party.position;
         const range = this.worldMap.fields.get(px, py).revealRange;
         this.worldMap.fields.forEach((field, x, y) => {
-            console.log(Mx.Geo.Distance.simple(x, y, px, py), x, y, px, py);
             if(Mx.Geo.Distance.simple(x, y, px, py) <= range) {
                 field.show();
             }
