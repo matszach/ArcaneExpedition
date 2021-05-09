@@ -54,7 +54,9 @@ module.exports = class GameWordlView extends Mx.View {
             fieldSprite.on('out', () => hoverText.content = '');
             f.spriteRef = fieldSprite;
             mapContainer.add(fieldSprite);
-            f.hide();
+            if(!f.discovered) {
+                f.hide();
+            }
         });
         // party markers
         const {x: px, y: py} = this.party.position;
@@ -137,6 +139,7 @@ module.exports = class GameWordlView extends Mx.View {
     }
 
     buildEventLayer() {
+        // new should be build for every event 
         const background = new InnerWindowBackgroundComponent(4, 7);
         return Mx.Layer.create({ entities: [background] });   
     }

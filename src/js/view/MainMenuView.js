@@ -10,7 +10,7 @@ module.exports = class MainMenuView extends Mx.View {
         this.title.place(0, -180)
         this.newGameButton = new MenuButtonComponent('New game', 48, () => this.game.toView(require("./NewGameView")));
         this.newGameButton.place(-150, 0);
-        this.continueButton = new MenuButtonComponent('Continue', 48, () => {}).disable();
+        this.continueButton = new MenuButtonComponent('Continue', 48, () => this.game.toView(require("./GameWorldView"))).disable();
         this.continueButton.place(150, 0);
         this.optionsButton = new MenuButtonComponent('Options', 48, () => {}).disable();
         this.optionsButton.place(-150, 120);
@@ -22,6 +22,7 @@ module.exports = class MainMenuView extends Mx.View {
                 this.optionsButton, this.creditsButton
             ] 
         });
+        this.setContinueButtonState();
     }
 
     onResize() {
@@ -30,6 +31,15 @@ module.exports = class MainMenuView extends Mx.View {
 
     onUpdate() {
         genericMenuViewUpdate(this.handler, this.input, 0.7, this.guiLayer);
+    }
+
+    setContinueButtonState() {
+        if(!!this.game.state.gameState) {
+            this.continueButton.enable();
+        } else {
+            // should try to read a loaded state file if present
+            // here or on game boot;
+        }
     }
 
 }
