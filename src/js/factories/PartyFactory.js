@@ -46,6 +46,9 @@ module.exports = class PartyFactory extends Factory {
             }
         });
         party.position.place(nx, ny);
+        // set initial field as visited
+        const field = worldMap.fields.get(nx, ny);
+        field.visited = true;
     }
 
 }

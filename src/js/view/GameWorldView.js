@@ -10,6 +10,7 @@ const Cursor = require("./gui/misc/Cursor");
 module.exports = class GameWordlView extends Mx.View {
 
     onCreate() {
+        // view setup
         this.worldMap = this.game.state.gameState.worldmap;
         this.party = this.game.state.gameState.party;
         this.mapLayer = this.buildMapLayer();
@@ -17,8 +18,13 @@ module.exports = class GameWordlView extends Mx.View {
         this.exitLayer = this.buildExitMenuLayer().hide();
         this.partyLayer = this.buildPartyLayer().hide();
         this.optionsLayer = this.buildOptionsLayer().hide();
-        this.eventLayer = this.buildEventLayer().hide();
-        this.revealAreaAroundPartyLocation();
+        this.eventLayer = this.buildDefaultEventLayer().hide();
+        // adapting to state (prevents exploit that would allow to skip event by exiting to the menu)
+        if(this.getCurrentField().visited) {
+            this.revealAreaAroundPartyLocation();
+        } else {
+            this.openEvent();
+        }
     }
 
     onResize() {
@@ -89,8 +95,10 @@ module.exports = class GameWordlView extends Mx.View {
             }).on('down', () => {
                 sprite.scale(0.9);
             }).on('up', () => {
-                this.partyMovement(dirX, dirY);
                 sprite.scale(1/0.9);
+                sprite.setFrame(1, 0);
+                Cursor.key = 'key';
+                this.partyMovement(dirX, dirY);
             });
         }
         return sprite;
@@ -104,7 +112,7 @@ module.exports = class GameWordlView extends Mx.View {
         this.optionsButton = new MenuButtonComponent('', 'Options', () => this.toggleSubViewLayer('options'), true);
         this.optionsButton.place(36, 176);
         this.eventButton = new MenuButtonComponent('', 'Event', () => this.toggleSubViewLayer('event'), true);
-        this.eventButton.place(36, 244);
+        this.eventButton.place(36, 244).disable();
         return Mx.Layer.create({ entities: [this.exitButton, this.partyButton, this.optionsButton, this.eventButton] });
     }
 
@@ -116,6 +124,14 @@ module.exports = class GameWordlView extends Mx.View {
         this.optionsLayer.hide();
         this.eventLayer.hide();
         targetLayer.hidden = !wasHidden;
+        if(targetLayer.hidden) {
+            if(!this.getCurrentField().visited) { // reopens event layer if unresolved
+                this.eventLayer.show();
+            }
+            this.mapLayer.unmute();
+        } else {
+            this.mapLayer.mute();
+        }
     }
 
     buildExitMenuLayer() {
@@ -138,27 +154,67 @@ module.exports = class GameWordlView extends Mx.View {
         return Mx.Layer.create({ entities: [background] });   
     }
 
-    buildEventLayer() {
-        // new should be build for every event 
+    buildDefaultEventLayer() {
+        // new should be build for every event, this is just a default layer
         const background = new InnerWindowBackgroundComponent(4, 7);
         return Mx.Layer.create({ entities: [background] });   
     }
 
+    setupEventLayerForEvent(event) {
+        // TODO external logic to build this view by event
+        this.eventLayer.empty();
+        const background = new InnerWindowBackgroundComponent(8, 4);
+        const resolve = ActiveText.create(-80, 50, 'TEST_resolve', '#ffffff', 40, 'pixel', 0, 1, 'center');
+        resolve.setAction(() => this.resolveEvent());
+        this.eventLayer.adds([background, resolve]);
+    }
+
 
     // gameplay logic
+    getCurrentField() {
+        return this.worldMap.fields.get(this.party.position.x, this.party.position.y);
+    }
+
+
     partyMovement(dx, dy) {
         this.party.travel(dx, dy, this.worldMap);
-        this.revealAreaAroundPartyLocation(); // TODO should only fire after successful event resolution
+        const field = this.getCurrentField();
+        if(field.visited) {
+            this.revealAreaAroundPartyLocation(); 
+        } else {
+            this.openEvent();
+        }
     }
 
     revealAreaAroundPartyLocation() {
         const {x: px, y: py} = this.party.position;
-        const range = this.worldMap.fields.get(px, py).revealRange;
+        const range = this.getCurrentField().revealRange;
         this.worldMap.fields.forEach((field, x, y) => {
             if(Mx.Geo.Distance.simple(x, y, px, py) <= range) {
                 field.show();
             }
         });
+    }
+
+    // fired when first entering a new field, shoudl disable party button until resolved
+    openEvent() {
+        const field = this.getCurrentField();
+        const event = field.getEvent();
+        this.setupEventLayerForEvent(event);
+        this.eventLayer.show();
+        this.eventButton.enable();
+        this.partyButton.disable();
+        this.mapLayer.mute();
+    }
+
+    resolveEvent() {
+        const field = this.getCurrentField();
+        field.visited = true;
+        this.revealAreaAroundPartyLocation(); 
+        this.eventLayer.hide();
+        this.eventButton.disable();
+        this.partyButton.enable();
+        this.mapLayer.unmute();
     }
 
 }
