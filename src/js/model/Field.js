@@ -23,7 +23,8 @@ module.exports = class Field {
         return ef.create({
             x: this.x,
             y: this.y,
-            typeId: this.typeId
+            typeId: this.typeId,
+            rng: rng,
         });
     }
 

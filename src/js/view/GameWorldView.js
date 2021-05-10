@@ -171,12 +171,10 @@ module.exports = class GameWordlView extends Mx.View {
         this.eventLayer.adds([background, resolve]);
     }
 
-
     // gameplay logic
     getCurrentField() {
         return this.worldMap.fields.get(this.party.position.x, this.party.position.y);
     }
-
 
     partyMovement(dx, dy) {
         this.party.travel(dx, dy, this.worldMap);
